@@ -18,12 +18,17 @@ pipeline {
             }
         }
 
-        stage('Deploy NGINX Load Balancer') {
-            steps {
-                sh '''
-                docker rm -f nginx-lb || true
-                docker run -d -p 80:80 --name nginx-lb nginx
-                '''
+       stage('Deploy NGINX Load Balancer') {
+           steps {
+               sh '''
+               docker rm -f nginx-lb || true
+               docker run -d -p 80:80 \
+               --name nginx-lb \
+               -v $(pwd)/CC_LAB-6/nginx/default.conf:/etc/nginx/conf.d/default.conf \
+               nginx
+               '''
+           }
+       }
             }
         }
     }
